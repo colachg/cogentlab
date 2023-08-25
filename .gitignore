@@ -1,0 +1,7 @@
+dist
+node_modules
+data
+globalConfig.json
+.idea
+.DS_Store
+tmp
