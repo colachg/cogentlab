@@ -1,7 +1,6 @@
 name: Build air-gap packages
 
 on:
-  # run it on push to the default repository branch
   push:
     branches:
       - main
@@ -16,9 +15,9 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+#      -
+#        name: Set up QEMU
+#        uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
