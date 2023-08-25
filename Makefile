@@ -16,7 +16,6 @@ build:
 	@curl -sSL https://get.k3s.io/ > $(DIST_PATH)/install.sh
 	@cp Makefile $(DIST_PATH)/
 	@tar -czvf k3s.tar.gz $(DIST_PATH)
-	@md5sum k3s.tar.gz > md5sum.txt
 
 .PHONY: install
 install:

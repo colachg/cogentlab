@@ -5,24 +5,55 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'Makefile'
+    paths-ignore:
+      - '*.md'
 
 jobs:
+  build-image:
+    name: "build container image"
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          tags: cogent/thumbnail:latest
+          outputs: type=tar,dest=thumbnail.tar
+
+
   build-package:
     name: "download k3s files"
     runs-on: ubuntu-22.04
     steps:
-      - name: "Checkout code"
+      -
+        name: "Checkout code"
         uses: actions/checkout@v3
 
-      - name: "Start build"
+      -
+        name: "Start build"
         run: make build
 
-      - name: "Upload artifacts"
+      -
+        name: "Calculate fingerprint"
+        run: md5sum k3s.tar.gz thumbnail.tar > md5sum.txt
+
+      -
+        name: "Upload artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: k3s.tar.gz
+          name: cogent-installation
           path: |
             k3s.tar.gz
+            thumbnail.tar
             md5sum.txt
