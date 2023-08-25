@@ -1,0 +1,28 @@
+name: Build air-gap packages
+
+on:
+  # run it on push to the default repository branch
+  push:
+    branches:
+      - main
+    paths:
+      - 'Makefile'
+
+jobs:
+  build-package:
+    name: "download k3s files"
+    runs-on: ubuntu-22.04
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v3
+
+      - name: "Start build"
+        run: make build
+
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: k3s.tar.gz
+          path: |
+            k3s.tar.gz
+            md5sum.txt
