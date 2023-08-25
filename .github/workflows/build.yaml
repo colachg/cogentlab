@@ -29,7 +29,18 @@ jobs:
           context: .
           tags: cogent/thumbnail:latest
           outputs: type=oci,dest=thumbnail.tar
+      -
+        name: "Calculate fingerprint"
+        run: md5sum thumbnail.tar > thumbnail_md5sum.txt
 
+      -
+        name: "Upload artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: thumbnail-images
+          path: |
+            thumbnail.tar
+            thumbnail_md5sum.txt
 
   build-package:
     name: "download k3s files"
@@ -45,7 +56,7 @@ jobs:
 
       -
         name: "Calculate fingerprint"
-        run: md5sum k3s.tar.gz thumbnail.tar > md5sum.txt
+        run: md5sum k3s.tar.gz > k3s_md5sum.txt
 
       -
         name: "Upload artifacts"
@@ -54,5 +65,4 @@ jobs:
           name: cogent-installation
           path: |
             k3s.tar.gz
-            thumbnail.tar
-            md5sum.txt
+            k3s_md5sum.txt
