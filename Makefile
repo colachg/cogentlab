@@ -29,6 +29,7 @@ build: thumbnail
 	@wget -qc --show-progress https://github.com/k3s-io/k3s/releases/download/$(K3S_VERSION)%2Bk3s1/k3s-airgap-images-$(ARCH).tar -P $(DIST_PATH)/
 	@curl -sSL https://get.k3s.io/ > $(DIST_PATH)/install.sh
 	@cp Makefile $(DIST_PATH)/
+	@cp INSTALL.md $(DIST_PATH)/README.md
 	@tar -czvf allInOne.tar.gz $(DIST_PATH)
 	@md5sum allInOne.tar.gz >> md5sum.txt
 
@@ -49,7 +50,7 @@ install:
 .PHONY: uninstall
 uninstall:
 	@echo "uninstall"
-	@helm uninstall cogent-thumbnail
+	@helm uninstall cogent-thumbnail --kubeconfig /etc/rancher/k3s/k3s.yaml
 	@bash /usr/local/bin/k3s-uninstall.sh
 	@rm -rf /usr/local/bin/k3s /var/lib/rancher/k3s/agent/images
 
