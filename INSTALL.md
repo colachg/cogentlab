@@ -34,6 +34,7 @@ can install the unzip tool by `sudo apt install -y unzip` and run `unzip name.zi
 
 
 ## TODO
+- [] use init container to fix task error.
 - [] support high available installation.
 - [] create a nfs storage class for the cluster to provide PVs.
 - [] provide local private registry with TLS support and S3(MinIO) backend.

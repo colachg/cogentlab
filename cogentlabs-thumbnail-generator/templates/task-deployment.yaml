@@ -57,6 +57,10 @@ spec:
                   key: rootPassword
           resources:
             {{- toYaml .Values.task.resources | nindent 12 }}
+      initContainers:
+        - name: thumbnail-generator-task-init
+          image: "{{ .Values.task.image.name }}:{{ .Values.task.image.tag | default .Chart.AppVersion }}"
+          command: ['sh', '-c', 'echo The app is running! && sleep 120']
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

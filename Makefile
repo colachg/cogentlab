@@ -37,3 +37,4 @@ uninstall:
 .PHONY: diagnose
 diagnose:
 	@echo "......start diagnose......"
+	@kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get po,svc,ep
