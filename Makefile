@@ -17,13 +17,13 @@ ARCH := amd64
 thumbnail: 3rd
 	@echo "...... build thumbnail ......"
 	@docker build . -t thumbnail
+	@mkdir -p $(DIST_PATH)
 	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save -o $(DIST_PATH)/thumbnail.tar
 	@helm package cogentlabs-thumbnail-generator -d $(DIST_PATH)/
 
 .PHONY: build
 build: thumbnail
 	@echo "...... start building ......"
-	@mkdir -p $(DIST_PATH)
 	@wget -qc --show-progress https://github.com/k3s-io/k3s/releases/download/$(K3S_VERSION)%2Bk3s1/k3s -P $(DIST_PATH)/
 	@wget -qc --show-progress https://github.com/k3s-io/k3s/releases/download/$(K3S_VERSION)%2Bk3s1/k3s-airgap-images-$(ARCH).tar -P $(DIST_PATH)/
 	@curl -sSL https://get.k3s.io/ > $(DIST_PATH)/install.sh
