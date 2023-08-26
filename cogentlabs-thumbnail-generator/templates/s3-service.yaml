@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thumbnail-generator-s3
+  labels:
+    app.kubernetes.io/name: thumbnail-generator-s3
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .Values.s3.service.type }}
+  ports:
+    - port: {{ .Values.s3.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: thumbnail-generator-s3

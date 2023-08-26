@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "cogentlabs-thumbnail-generator.fullname" . }}-test-connection"
+  labels:
+    {{- include "cogentlabs-thumbnail-generator.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['thumbnail-generator-api:{{ .Values.api.service.port }}']
+  restartPolicy: Never

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thumbnail-generator-db
+  labels:
+    app.kubernetes.io/name: thumbnail-generator-db
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: {{ .Values.db.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thumbnail-generator-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: thumbnail-generator
+        app.kubernetes.io/instance: thumbnail-generator
+    spec:
+      serviceAccountName: thumbnail-generator
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: thumbnail-generator-db
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.db.image.name }}:{{ .Values.db.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.db.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.db.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.db.resources | nindent 12 }}
+      {{- with .Values.db.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.db.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.db.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

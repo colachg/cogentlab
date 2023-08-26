@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thumbnail-generator-db
+  labels:
+    app.kubernetes.io/name: thumbnail-generator-db
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: {{ .Values.db.service.type }}
+  ports:
+    - port: {{ .Values.db.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: thumbnail-generator-db
