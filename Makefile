@@ -30,15 +30,14 @@ install:
 .PHONY: 3rd
 3rd:
 	@echo "...... download dependency ......"
-	@docker pull minio/minio
-	@docker pull mongo
+	@bash scripts/allinone.sh 3rd-images.txt
 
 
 .PHONY: thumbnail
 thumbnail: 3rd
 	@echo "...... build thumbnail ......"
 	@docker build . -t thumbnail
-	@docker save $(docker images -q) -o $(DIST_PATH)/thumbnail.tar
+	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save -o thumbnail.tar
 	@md5sum thumbnail.tar >> md5sum.txt
 
 
