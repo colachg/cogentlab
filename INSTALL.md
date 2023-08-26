@@ -27,7 +27,7 @@ can install the unzip tool by `sudo apt install -y unzip` and run `unzip name.zi
 
 ## Q&A
 1. kubectl cannot get access to the api server ?
-   - please add the `--kubeconfig /etc/rancher/k3s/k3s.yaml` behind kubectl 
+   - please add the `--kubeconfig /etc/rancher/k3s/k3s.yaml` behind kubectl.
 2. Why my thumbnail task status is always waiting ?
    - please run this command `kubectl get po |grep thumbnail-generator-task | awk '{print "kubectl delete po " $1}' |bash` in your node.
    - this is because the thumbnail-task has no readiness and liveness probe.
@@ -41,3 +41,4 @@ can install the unzip tool by `sudo apt install -y unzip` and run `unzip name.zi
 - [] use "ArgoCD" to manage all services in the cluster.
 - [] use "skopeo" to operate images.
 - [] need healthy and ready probe for thumbnail-task service.
+- [] create ingress for this service and set tls for it.
