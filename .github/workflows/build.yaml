@@ -30,28 +30,3 @@ jobs:
         with:
           name: allInOne
           path: cogent
-
-  build-package:
-    name: "download k3s files"
-    runs-on: ubuntu-22.04
-    steps:
-      -
-        name: "Checkout code"
-        uses: actions/checkout@v3
-
-      -
-        name: "Start build"
-        run: make build
-
-      -
-        name: "Calculate fingerprint"
-        run: md5sum k3s.tar.gz > k3s_md5sum.txt
-
-      -
-        name: "Upload artifacts"
-        uses: actions/upload-artifact@v3
-        with:
-          name: cogent-installation
-          path: |
-            k3s.tar.gz
-            k3s_md5sum.txt

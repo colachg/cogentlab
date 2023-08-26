@@ -30,10 +30,7 @@ install:
 .PHONY: 3rd
 3rd:
 	@echo "...... download dependency ......"
-	@docker rmi $(docker image -qa) || echo "no images"
-	@while read -r line;
-		do docker pull $line;
-	done < 3rd-images.txt
+	@docker pull minio/minio mongo
 
 .PHONY: thumbnail
 thumbnail: 3rd
