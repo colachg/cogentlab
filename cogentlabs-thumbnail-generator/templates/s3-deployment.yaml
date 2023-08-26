@@ -34,20 +34,60 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.s3.image.name }}:{{ .Values.s3.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.s3.image.pullPolicy }}
+          args:
+            - server
+            - /data
+          env:
+            - name: MINIO_ENDPOINT
+              value: thumbnail-generator-s3
+            - name: MINIO_PORT
+              value: "9000"
+            - name: MINIO_USE_SSL
+              value: "false"
+            - name: MONGO_URL
+              value: mongodb://thumbnail-generator-db:27017
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: rootUser
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: rootPassword
           ports:
             - name: http
               containerPort: {{ .Values.s3.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /minio/health/live
+              port: 9000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /minio/health/ready
+              port: 9000
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.s3.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /data
+              name: s3-claim0
+      volumes:
+        - name: s3-claim0
+          persistentVolumeClaim:
+            claimName: s3-claim0
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -34,8 +34,37 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.task.image.name }}:{{ .Values.task.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.task.image.pullPolicy }}
+          env:
+            - name: SERVER_TYPE
+              value: worker
+            - name: MINIO_ENDPOINT
+              value: thumbnail-generator-s3
+            - name: MINIO_PORT
+              value: "9000"
+            - name: MINIO_USE_SSL
+              value: "false"
+            - name: MONGO_URL
+              value: mongodb://thumbnail-generator-db:27017
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: rootUser
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secrets
+                  key: rootPassword
           resources:
             {{- toYaml .Values.task.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

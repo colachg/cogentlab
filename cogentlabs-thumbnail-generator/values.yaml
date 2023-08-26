@@ -67,12 +67,12 @@ affinity: {}
 api:
   name: thumbnail-api
   image:
-    name: thumbnail-api
+    name: thumbnail
     pullPolicy: IfNotPresent
     tag: "latest"
   repository: {}
   service:
-    type: ClusterIP
+    type: NodePort
     port: 3000
   resources: {}
   env: {}
@@ -87,7 +87,7 @@ task:
   name: thumbnail-task
   replicaCount: 1
   image:
-    name: thumbnail-task
+    name: thumbnail
     pullPolicy: IfNotPresent
     tag: "latest"
   repository:
@@ -123,7 +123,9 @@ s3:
     type: ClusterIP
     port: 9000
   resources: {}
-  env: {}
+  env:
+    username: imtH8bR8aTSH
+    password: MUE8U5sto6kx
   autoscaling:
     enabled: false
     minReplicas: 1

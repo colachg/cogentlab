@@ -13,8 +13,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: thumbnail-generator
-        app.kubernetes.io/instance: thumbnail-generator
+        app.kubernetes.io/name: thumbnail-generator-db
     spec:
       serviceAccountName: thumbnail-generator
       securityContext:
@@ -29,16 +28,15 @@ spec:
             - name: http
               containerPort: {{ .Values.db.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.db.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /data/db
+              name: db-claim0
+      volumes:
+        - name: db-claim0
+          persistentVolumeClaim:
+            claimName: db-claim0
       {{- with .Values.db.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
