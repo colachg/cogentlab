@@ -33,4 +33,4 @@ https://github.com/DefinitelyTyped/DefinitelyTyped/issues/65766
 - [] provide local private registry with TLS support and S3(MinIO) backend.
 - [] add some diagnose script to grasp logs from the installation process and the host.
 - [] use "ArgoCD" to manage all services in the cluster.
-- [] 
+- [] use "skopeo" to operate images.

@@ -18,7 +18,7 @@ thumbnail: 3rd
 	@echo "...... build thumbnail ......"
 	@docker build . -t thumbnail
 	@mkdir -p $(DIST_PATH)
-	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save -o $(DIST_PATH)/thumbnail.tar
+	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save | gzip >  $(DIST_PATH)/thumbnail.tar
 	@helm package cogentlabs-thumbnail-generator -d $(DIST_PATH)/
 
 .PHONY: build
@@ -35,7 +35,9 @@ build: thumbnail
 install:
 	@echo "...... start installing ......"
 	@mkdir -p /var/lib/rancher/k3s/agent/images/
-	@cp ./k3s-airgap-images-$(ARCH).tar /var/lib/rancher/k3s/agent/images/
+	@tar -zxvf allInOne.tar.gz
+	@cp ./cogent/*.tar /var/lib/rancher/k3s/agent/images/
+
 	@cp k3s /usr/local/bin/
 	@chmod +x ./install.sh /usr/local/bin/k3s
 	@bash INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
