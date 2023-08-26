@@ -19,7 +19,7 @@ thumbnail: 3rd
 	@docker build . -t thumbnail
 	@mkdir -p $(DIST_PATH)
 	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save -o $(DIST_PATH)/thumbnail.tar
-	@gzip thumbnail.tar
+	@gzip $(DIST_PATH)/thumbnail.tar
 	@helm package cogentlabs-thumbnail-generator -d $(DIST_PATH)/
 
 .PHONY: build
