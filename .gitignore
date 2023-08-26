@@ -5,4 +5,3 @@ globalConfig.json
 .idea
 .DS_Store
 tmp
-package-lock.json
