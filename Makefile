@@ -41,11 +41,16 @@ install:
 	@cp k3s /usr/local/bin/
 	@chmod +x ./install.sh /usr/local/bin/k3s
 	@bash INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
+	@sleep 60
+	@helm install cogent-thumbnail thumbnail-generator-0.1.0.tgz
+
 
 .PHONY: uninstall
 uninstall:
 	@echo "uninstall"
+	@helm uninstall cogent-thumbnail
 	@bash /usr/local/bin/k3s-uninstall.sh
+	@rm -rf /usr/local/bin/k3s /var/lib/rancher/k3s/agent/images
 
 .PHONY: diagnose
 diagnose:
