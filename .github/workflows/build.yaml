@@ -8,7 +8,7 @@ on:
       - '*.md'
 
 jobs:
-  build-image:
+  build:
     name: "build container image"
     runs-on: ubuntu-latest
     steps:
@@ -21,26 +21,15 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
       -
-        name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          tags: cogent/thumbnail:latest
-          outputs: type=oci,dest=thumbnail.tar
-      -
-        name: "Calculate fingerprint"
-        run: md5sum thumbnail.tar > thumbnail_md5sum.txt
-
+        name: "build all in one"
+        run: make build
       -
         name: "Upload artifacts"
         uses: actions/upload-artifact@v3
         with:
-          name: thumbnail-images
-          path: |
-            thumbnail.tar
-            thumbnail_md5sum.txt
+          name: allInOne
+          path: cogent
 
   build-package:
     name: "download k3s files"
