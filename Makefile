@@ -18,7 +18,8 @@ thumbnail: 3rd
 	@echo "...... build thumbnail ......"
 	@docker build . -t thumbnail
 	@mkdir -p $(DIST_PATH)
-	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save | gzip >  $(DIST_PATH)/thumbnail.tar
+	@docker images --format "{{.Repository}}:{{.Tag}}" | xargs docker save -o $(DIST_PATH)/thumbnail.tar
+	@gzip thumbnail.tar
 	@helm package cogentlabs-thumbnail-generator -d $(DIST_PATH)/
 
 .PHONY: build
@@ -35,14 +36,14 @@ build: thumbnail
 install:
 	@echo "...... start installing ......"
 	@mkdir -p /var/lib/rancher/k3s/agent/images/
-	@tar -zxvf allInOne.tar.gz
-	@cp ./cogent/*.tar /var/lib/rancher/k3s/agent/images/
+	@gunzip thumbnail.tar.gz
+	@cp *.tar /var/lib/rancher/k3s/agent/images/
 
 	@cp k3s /usr/local/bin/
 	@chmod +x ./install.sh /usr/local/bin/k3s
-	@bash INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
+	INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
 	@sleep 60
-	@helm install cogent-thumbnail thumbnail-generator-0.1.0.tgz
+	@helm install cogent-thumbnail thumbnail-generator-0.1.0.tgz --kubeconfig /etc/rancher/k3s/k3s.yaml
 
 
 .PHONY: uninstall
