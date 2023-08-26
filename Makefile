@@ -1,5 +1,5 @@
 # default rule
-default: install
+default: build
 
 # path macros
 DIST_PATH := cogent
@@ -10,6 +10,7 @@ ARCH := amd64
 .PHONY: 3rd
 3rd:
 	@echo "...... download dependency ......"
+	@docker images -qa | xargs docker rmi -f
 	@bash scripts/allinone.sh 3rd-images.txt
 
 
@@ -43,7 +44,7 @@ install:
 	@cp k3s /usr/local/bin/
 	@chmod +x ./install.sh /usr/local/bin/k3s
 	INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
-	@sleep 60
+	@sleep 45
 	@helm install cogent-thumbnail thumbnail-generator-0.1.0.tgz --kubeconfig /etc/rancher/k3s/k3s.yaml
 
 
