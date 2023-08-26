@@ -30,7 +30,9 @@ install:
 .PHONY: 3rd
 3rd:
 	@echo "...... download dependency ......"
-	@docker pull minio/minio mongo
+	@docker pull minio/minio
+	@docker pull mongo
+
 
 .PHONY: thumbnail
 thumbnail: 3rd
