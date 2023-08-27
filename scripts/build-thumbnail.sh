@@ -1,4 +1,6 @@
 #!/bin/bash
+
+DIR="cogent"
 # download all the 3rd images
 docker pull minio/minio:latest
 docker pull mongo:latest
@@ -7,9 +9,9 @@ docker pull mongo:latest
 docker build . -t thumbnail
 
 # save all the images
-mkdir -p cogent
-docker save minio/minio:latest mongo:latest thumbnail -o cogent/thumbnail.tar
-gzip cogent/thumbnail.tar
+mkdir -p $DIR
+docker save minio/minio:latest mongo:latest thumbnail:latest -o $DIR/thumbnail.tar
+gzip $DIR/thumbnail.tar
 
 # package the chart
-helm package cogentlabs-thumbnail-generator -d cogent/
+helm package cogentlabs-thumbnail-generator -d $DIR/
