@@ -60,7 +60,8 @@ spec:
       initContainers:
         - name: thumbnail-generator-task-init
           image: "{{ .Values.task.image.name }}:{{ .Values.task.image.tag | default .Chart.AppVersion }}"
-          command: ['sh', '-c', 'echo The app is running! && sleep 120']
+          imagePullPolicy: {{ .Values.task.image.pullPolicy }}
+          command: ['sh', '-c', 'echo The app is running! && sleep 100']
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

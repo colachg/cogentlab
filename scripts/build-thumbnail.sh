@@ -10,6 +10,7 @@ docker build . -t thumbnail
 
 # save all the images
 mkdir -p $DIR
+cp scripts/diagnose.sh team.jpeg $DIR/
 docker save minio/minio:latest mongo:latest thumbnail:latest -o $DIR/thumbnail.tar
 gzip $DIR/thumbnail.tar
 

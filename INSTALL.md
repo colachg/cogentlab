@@ -19,7 +19,7 @@ According to its official [guide](https://docs.k3s.io/installation/airgap), I en
 1. Download the zip files and copy it to your air-gaped environment. Decompress it, if you are using Ubuntu as the host, you
 can install the unzip tool by `sudo apt install -y unzip` and run `unzip name.zip`.
 2. Checking the md5sum `md5sum allInOne.tar.gz` with the md5sum.txt, then `tar -zxvf allInOne.tar.gz` to untar the file.
-3. `cd cogent` the extracted dir, run `make install` to install the k3s and deploy the "thumbnail-generator" service.
+3. `cd cogent` the extracted dir, run `make install  2>&1 | tee installation.log` to install the k3s and deploy the "thumbnail-generator" service.
 
 
 ## How to uninstall ?
