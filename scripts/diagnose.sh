@@ -13,8 +13,7 @@ echo -e "=======check services========\n"
 NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services thumbnail-generator-api)
 NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
 
-echo -e "=======check services========\n"
-ID=$(curl --location --request POST "http://$NODE_IP:$NODE_PORT/thumbnail" \
+ID=$(curl --silent --location --request POST "http://$NODE_IP:$NODE_PORT/thumbnail" \
 --form 'file=@"team.jpeg"'| jq -r .data.job_id)
 sleep 5
 echo -e "=======check services========\n"

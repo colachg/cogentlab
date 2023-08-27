@@ -38,3 +38,4 @@ uninstall:
 .PHONY: diagnose
 diagnose:
 	@echo "......start diagnose......\n"
+	@bash diagnose.sh
