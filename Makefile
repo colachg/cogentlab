@@ -17,7 +17,7 @@ build: thumbnail
 install:
 	@echo "...... start installing ......\n"
 	@mkdir -p /var/lib/rancher/k3s/agent/images/
-	@gunzip thumbnail.tar.gz
+	@if [ -f "thumbnail.tar.gz" ]; then gunzip thumbnail.tar.gz;fi
 	@cp *.tar /var/lib/rancher/k3s/agent/images/
 
 	@cp k3s /usr/local/bin/
