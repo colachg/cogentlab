@@ -17,5 +17,5 @@ ID=$(curl --silent --location --request POST "http://$NODE_IP:$NODE_PORT/thumbna
 --form 'file=@"team.jpeg"'| jq -r .data.job_id)
 sleep 5
 echo -e "=======check services========\n"
-curl --location --request GET "http://$NODE_IP:$NODE_PORT/thumbnail/$ID"
-curl --location --request GET -O "http://$NODE_IP:$NODE_PORT/thumbnail/$ID/image"
+curl --location --silent --request GET "http://$NODE_IP:$NODE_PORT/thumbnail/$ID"
+curl --location --silent --request GET -O "http://$NODE_IP:$NODE_PORT/thumbnail/$ID/image"
