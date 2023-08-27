@@ -24,7 +24,7 @@ install:
 	@chmod +x ./install.sh /usr/local/bin/k3s
 	INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh
 	@sleep 30
-	@echo -e "...... start deploying ......\n"
+	@echo "...... start deploying ......\n"
 	@helm install cogent-thumbnail thumbnail-generator-0.1.0.tgz --kubeconfig /etc/rancher/k3s/k3s.yaml
 
 
