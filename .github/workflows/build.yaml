@@ -43,6 +43,17 @@ jobs:
         name: Build artifacts
         run: make build
       -
+        name: Build increase package
+        run: make thumbnail
+      -
+        name: Upload increase artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: increase
+          path: |
+            cogent/thumbnail.tar
+            
+      -
         name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:

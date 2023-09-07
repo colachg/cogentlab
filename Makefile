@@ -39,3 +39,8 @@ uninstall:
 diagnose:
 	@echo "......start diagnose......\n"
 	@bash diagnose.sh
+
+.PHONY: update
+update:
+	@echo "......start update......\n"
+	@bash diagnose.sh
