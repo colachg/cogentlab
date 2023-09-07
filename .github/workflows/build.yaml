@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - update
     paths-ignore:
       - '*.md'
 
@@ -52,7 +53,7 @@ jobs:
           name: increase
           path: |
             cogent/thumbnail.tar
-            
+
       -
         name: Upload artifacts
         uses: actions/upload-artifact@v3
